@@ -1,13 +1,15 @@
 import { Router } from 'express';
+import { Bet } from './entities/Bet';
 
-const bets: Number[] = [];
+const bets: Bet[] = [];
 
 const betsRoutes = Router();
 
 betsRoutes.post('/', (request, response) => {
   const { value } = request.body;
 
-  bets.push(value);
+  const bet = new Bet(value);
+  bets.push(bet);
 
   return response.status(201).send();
 });
