@@ -1,35 +1,37 @@
 import { Router } from 'express';
 import { Bet } from './entities/Bet';
-
-const bets: Bet[] = [];
+import { PrismaBetsRepository } from './repositories/Prisma/PrismaBetsRepository';
 
 const betsRoutes = Router();
 
-betsRoutes.post('/', (request, response) => {
+betsRoutes.post('/', async (request, response) => {
   const { value } = request.body;
 
-  const bet = new Bet(value);
-  bets.push(bet);
+  const prismaBetsRepository = new PrismaBetsRepository();
+  await prismaBetsRepository.create({ value });
 
   return response.status(201).send();
 });
 
-betsRoutes.get('/', (request, response) => {
-  const noDuplicateBets = bets.filter((bet) => {
+betsRoutes.get('/', async (request, response) => {
+  const prismaBetsRepository = new PrismaBetsRepository();
+  const bets = await prismaBetsRepository.all();
+
+  const noDuplicateBetsValues = bets.filter((bet) => {
     let count = 0;
     
     for (let i = 0; i < bets.length; i++) {
-      if (bet === bets[i]) {
+      if (bet.value === bets[i].value) {
         count++;
       }
     }
 
     if (count == 1) {
-      return bet;
+      return bet.value;
     }
   });
 
-  const lower = noDuplicateBets.sort()[0];
+  const lower = noDuplicateBetsValues.sort()[0];
 
   return response.json({ lowest_value: lower });
 });
