@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { Bet } from './entities/Bet';
 import { PrismaBetsRepository } from './repositories/Prisma/PrismaBetsRepository';
+import { GetWinnerBetUseCase } from './useCases/GetWinnerBetUseCase';
 
 const betsRoutes = Router();
 
@@ -15,25 +15,11 @@ betsRoutes.post('/', async (request, response) => {
 
 betsRoutes.get('/', async (request, response) => {
   const prismaBetsRepository = new PrismaBetsRepository();
-  const bets = await prismaBetsRepository.all();
+  const getWinnerBetUserCase = new GetWinnerBetUseCase(prismaBetsRepository);
 
-  const noDuplicateBetsValues = bets.filter((bet) => {
-    let count = 0;
-    
-    for (let i = 0; i < bets.length; i++) {
-      if (bet.value === bets[i].value) {
-        count++;
-      }
-    }
+  const winnerBet = await getWinnerBetUserCase.execute();
 
-    if (count == 1) {
-      return bet.value;
-    }
-  });
-
-  const lower = noDuplicateBetsValues.sort()[0];
-
-  return response.json({ lowest_value: lower });
+  return response.json({ lowest_value: winnerBet });
 });
 
 export { betsRoutes };
