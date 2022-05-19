@@ -5,15 +5,19 @@ import { GetWinnerBetUseCase } from './useCases/GetWinnerBetUseCase';
 const betsRoutes = Router();
 
 betsRoutes.post('/', async (request, response) => {
-  const { value } = request.body;
+  const { auctionId, value, username } = request.body;
 
   const prismaBetsRepository = new PrismaBetsRepository();
-  await prismaBetsRepository.create({ value });
+  const bet = await prismaBetsRepository.create({
+    auctionId,
+    value,
+    username
+  });
 
-  return response.status(201).send();
+  return response.status(201).json(bet);
 });
 
-betsRoutes.get('/', async (request, response) => {
+betsRoutes.get('/winner', async (request, response) => {
   const prismaBetsRepository = new PrismaBetsRepository();
   const getWinnerBetUserCase = new GetWinnerBetUseCase(prismaBetsRepository);
 

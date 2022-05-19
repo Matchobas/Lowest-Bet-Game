@@ -3,12 +3,16 @@ import { prisma } from "../../prisma";
 import { BetInformation, BetsRepository } from "../BetsRepository";
 
 class PrismaBetsRepository implements BetsRepository {
-  async create({ value }: BetInformation): Promise<void> {
-    await prisma.bets.create({
+  async create({ auctionId, value, username }: BetInformation): Promise<Bets> {
+    const bet = await prisma.bets.create({
       data: {
+        auction_id: auctionId,
         value,
+        user_name: username,
       }
     });
+
+    return bet;
   };
 
   async all(): Promise<Bets[]> {

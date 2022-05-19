@@ -1,5 +1,5 @@
 import express from 'express';
-import { betsRoutes } from './routes';
+import { betsRoutes } from './bets.routes';
 import { auctionsRoutes } from './auctions.routes';
 
 const app = express();
