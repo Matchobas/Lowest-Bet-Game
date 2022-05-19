@@ -17,6 +17,16 @@ betsRoutes.post('/', async (request, response) => {
   return response.status(201).json(bet);
 });
 
+betsRoutes.get('/', async (request, response) => {
+  const { id } = request.body;
+
+  const prismaBetsRepository = new PrismaBetsRepository();
+
+  const bet = await prismaBetsRepository.findById(id);
+
+  return response.json(bet);
+});
+
 betsRoutes.get('/winner', async (request, response) => {
   const prismaBetsRepository = new PrismaBetsRepository();
   const getWinnerBetUserCase = new GetWinnerBetUseCase(prismaBetsRepository);

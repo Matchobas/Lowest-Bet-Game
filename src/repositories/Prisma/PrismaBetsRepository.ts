@@ -20,6 +20,15 @@ class PrismaBetsRepository implements BetsRepository {
 
     return bets;
   };
+
+  async findById(id: string): Promise<Bets | null> {
+    const bet = await prisma.bets.findFirst({
+      where: { id: id },
+      include: { auction: true }
+    });
+
+    return bet;
+  }
 }
 
 export { PrismaBetsRepository };
