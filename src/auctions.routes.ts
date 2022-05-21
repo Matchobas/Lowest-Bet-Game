@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { PrismaAuctionsRepository } from './repositories/Prisma/PrismaAuctionsRepository';
+import { GetAuctionByIdUseCase } from './useCases/GetAuctionByIdUseCase';
 
 const auctionsRoutes = Router();
 
@@ -21,8 +22,9 @@ auctionsRoutes.get('/', async (request, response) => {
   const { id } = request.body;
 
   const prismaAuctionsRepository = new PrismaAuctionsRepository();
+  const getAuctionByIdUseCase = new GetAuctionByIdUseCase(prismaAuctionsRepository);
 
-  const auction = await prismaAuctionsRepository.findById(id);
+  const auction = getAuctionByIdUseCase.execute(id);
 
   return response.json(auction);
 });
