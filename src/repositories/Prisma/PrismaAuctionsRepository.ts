@@ -15,7 +15,7 @@ class PrismaAuctionsRepository implements AuctionsRepository {
   }
 
   async findById(id: string): Promise<Auction | null> {
-    const auction = await prisma.auction.findFirst({
+    const auction = await prisma.auction.findUnique({
       where: { id: id },
       include: { bets: true },
     });

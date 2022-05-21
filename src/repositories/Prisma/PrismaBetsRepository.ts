@@ -16,13 +16,13 @@ class PrismaBetsRepository implements BetsRepository {
   };
 
   async all(): Promise<Bets[]> {
-    const bets = prisma.bets.findMany();
+    const bets = await prisma.bets.findMany();
 
     return bets;
   };
 
   async findById(id: string): Promise<Bets | null> {
-    const bet = await prisma.bets.findFirst({
+    const bet = await prisma.bets.findUnique({
       where: { id: id },
       include: { auction: true }
     });

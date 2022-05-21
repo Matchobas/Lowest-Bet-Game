@@ -20,6 +20,8 @@ app.use((err: Error, request: Request, response: Response, next: NextFunction) =
       message: err.message
     });
   }
+
+  return response.json({ message: err.message });
 });
 
 app.listen(3333, () => {

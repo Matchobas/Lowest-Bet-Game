@@ -25,11 +25,11 @@ auctionsRoutes.get('/', async (request, response) => {
     const prismaAuctionsRepository = new PrismaAuctionsRepository();
     const getAuctionByIdUseCase = new GetAuctionByIdUseCase(prismaAuctionsRepository);
 
-    const auction = await getAuctionByIdUseCase.execute(id);
+    const auction = await getAuctionByIdUseCase.execute(String(id));
 
     return response.json(auction);
   } catch (err: any) {
-    return response.status(err.status).json({ message: err.message });
+    return response.json({ message: err.message });
   }
 });
 
