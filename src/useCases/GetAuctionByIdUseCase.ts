@@ -11,7 +11,7 @@ class GetAuctionByIdUseCase {
   
   async execute(id: string) {
     if(!id) {
-      throw new AppError('This ID not correspond with any auction', 401);
+      throw new AppError('This ID not correspond with any auction', 400);
     }
 
     const auction = await this.auctionRepository.findById(id);

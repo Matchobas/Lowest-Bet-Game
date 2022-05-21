@@ -19,14 +19,18 @@ auctionsRoutes.post('/', async (request, response) => {
 });
 
 auctionsRoutes.get('/', async (request, response) => {
-  const { id } = request.body;
+  try {
+    const { id } = request.body;
 
-  const prismaAuctionsRepository = new PrismaAuctionsRepository();
-  const getAuctionByIdUseCase = new GetAuctionByIdUseCase(prismaAuctionsRepository);
+    const prismaAuctionsRepository = new PrismaAuctionsRepository();
+    const getAuctionByIdUseCase = new GetAuctionByIdUseCase(prismaAuctionsRepository);
 
-  const auction = getAuctionByIdUseCase.execute(id);
+    const auction = await getAuctionByIdUseCase.execute(id);
 
-  return response.json(auction);
+    return response.json(auction);
+  } catch (err: any) {
+    return response.status(err.status).json({ message: err.message });
+  }
 });
 
 export { auctionsRoutes }

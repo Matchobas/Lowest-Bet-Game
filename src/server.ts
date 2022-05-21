@@ -13,6 +13,7 @@ app.use('/bets', betsRoutes);
 app.use('/auction', auctionsRoutes);
 
 // Middleware to handle errors without the need to try catch in every route
+// Not working
 app.use((err: Error, request: Request, response: Response, next: NextFunction) => {
   if (err instanceof AppError) {
     return response.status(err.status).json({
