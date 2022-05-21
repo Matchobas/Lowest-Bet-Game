@@ -1,3 +1,4 @@
+import { Auction } from "@prisma/client";
 import { AppError } from "../errors/AppError";
 import { AuctionsRepository } from "../repositories/AuctionsRepository"
 
@@ -9,7 +10,7 @@ class GetAuctionByIdUseCase {
     this.auctionRepository = auctionRepository;
   } 
   
-  async execute(id: string) {
+  async execute(id: string): Promise<Auction> {
     const auction = await this.auctionRepository.findById(id);
 
     if (!auction) {

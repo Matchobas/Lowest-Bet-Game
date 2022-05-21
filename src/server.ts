@@ -1,8 +1,9 @@
 import express, { NextFunction, Request, Response } from 'express';
+import 'express-async-errors';
+
 import { betsRoutes } from './bets.routes';
 import { auctionsRoutes } from './auctions.routes';
 
-import 'express-async-errors';
 import { AppError } from './errors/AppError';
 
 const app = express();
