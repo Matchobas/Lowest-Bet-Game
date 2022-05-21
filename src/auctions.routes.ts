@@ -17,4 +17,14 @@ auctionsRoutes.post('/', async (request, response) => {
   return response.json(auction);
 });
 
+auctionsRoutes.get('/', async (request, response) => {
+  const { id } = request.body;
+
+  const prismaAuctionsRepository = new PrismaAuctionsRepository();
+
+  const auction = await prismaAuctionsRepository.findById(id);
+
+  return response.json(auction);
+});
+
 export { auctionsRoutes }

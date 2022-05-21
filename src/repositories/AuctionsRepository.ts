@@ -7,4 +7,5 @@ export interface AuctionCreateData {
 
 export interface AuctionsRepository {
   create: (data: AuctionCreateData) => Promise<Auction>
+  findById: (id: string) => Promise<Auction | null>
 }

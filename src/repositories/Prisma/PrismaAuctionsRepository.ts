@@ -13,6 +13,15 @@ class PrismaAuctionsRepository implements AuctionsRepository {
 
     return auction;
   }
+
+  async findById(id: string): Promise<Auction | null> {
+    const auction = await prisma.auction.findFirst({
+      where: { id },
+      include: { bets: true },
+    });
+
+    return auction;
+  }
 }
 
 export { PrismaAuctionsRepository }
