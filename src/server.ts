@@ -1,17 +1,14 @@
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 
-import { betsRoutes } from './bets.routes';
-import { auctionsRoutes } from './auctions.routes';
-
 import { AppError } from './errors/AppError';
+import { routes } from './routes';
 
 const app = express();
 
 app.use(express.json());
 
-app.use('/bets', betsRoutes);
-app.use('/auction', auctionsRoutes);
+app.use('/', routes);
 
 // Middleware to handle errors without the need to try catch in every route
 // Not working

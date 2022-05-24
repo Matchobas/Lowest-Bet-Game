@@ -29,3 +29,8 @@ A simples DataBase is being build with the ORM Prisma. To create your own databa
 
 
 ## Routes:
+
+### Auctions
+
+The auctions are created with an item to be auctioned and a date to end it, until this end date is met the players can make secret bets to it, that are related to that auction, when the time is done, you can return the winner bet.
+
