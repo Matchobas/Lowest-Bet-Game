@@ -1,4 +1,6 @@
 import { Bets } from "@prisma/client";
+import { AppError } from "../errors/AppError";
+import { AuctionsRepository } from "../repositories/AuctionsRepository";
 import { BetsRepository } from "../repositories/BetsRepository";
 
 /**
@@ -9,13 +11,32 @@ import { BetsRepository } from "../repositories/BetsRepository";
 
 class GetWinnerBetUseCase {
   private betsRepository: BetsRepository;
+  private auctionsRepository: AuctionsRepository;
 
-  constructor(betsRepository: BetsRepository) {
+  constructor(
+    betsRepository: BetsRepository,
+    auctionsRepository: AuctionsRepository
+  ) {
     this.betsRepository = betsRepository;
+    this.auctionsRepository = auctionsRepository;
   }
   
-  async execute(): Promise<Bets> {
-    const bets = await this.betsRepository.all();
+  async execute(auctionId: string): Promise<Bets> {
+    const auction = await this.auctionsRepository.findById(auctionId);
+
+    if (!auction) {
+      throw new AppError("The informed ID does not correspond to any existing auction");
+    }
+
+    if (auction.end_time > new Date()) {
+      throw new AppError("There is still time until the bet is finished");
+    }
+
+    const bets = await this.betsRepository.findAllByAuctionId(auctionId);
+
+    if (!bets) {
+      throw new AppError("No bets were made in this auction");
+    }
 
     const noDuplicateBetsValues = bets.filter((bet) => {
       let count = 0;

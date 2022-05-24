@@ -17,6 +17,7 @@ class CreateBetInAuctionUseCase {
   async execute({ auctionId, value, username }: BetRequestData) {
     const auction = await this.auctionsRepository.findById(auctionId);
 
+    console.log('c');
     if (value <= 0) {
       throw new AppError("You can't bet a negative value or 0");
     }

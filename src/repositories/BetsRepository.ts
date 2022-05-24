@@ -10,4 +10,5 @@ export interface BetsRepository {
   create: (data: BetInformation) => Promise<Bets>;
   all: () => Promise<Bets[]>;
   findById: (id: string) => Promise<Bets | null>;
+  findAllByAuctionId: (auctionId: string) => Promise<Bets[] | null>;
 }

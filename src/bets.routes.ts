@@ -35,13 +35,19 @@ betsRoutes.get('/', async (request, response) => {
   return response.json(bet);
 });
 
-betsRoutes.get('/winner', async (request, response) => {
+betsRoutes.get('/winner/:auctionId', async (request, response) => {
+  const { auctionId } = request.params;
+
   const prismaBetsRepository = new PrismaBetsRepository();
-  const getWinnerBetUserCase = new GetWinnerBetUseCase(prismaBetsRepository);
+  const prismaAuctionsRepository = new PrismaAuctionsRepository();
+  const getWinnerBetUserCase = new GetWinnerBetUseCase(
+    prismaBetsRepository,
+    prismaAuctionsRepository
+  );
 
-  const winnerBet = await getWinnerBetUserCase.execute();
+  const winnerBet = await getWinnerBetUserCase.execute(auctionId);
 
-  return response.json({ lowest_value: winnerBet });
+  return response.json({ winnerBet: winnerBet });
 });
 
 export { betsRoutes };

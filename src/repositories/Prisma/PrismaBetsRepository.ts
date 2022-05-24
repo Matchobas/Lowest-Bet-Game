@@ -29,6 +29,14 @@ class PrismaBetsRepository implements BetsRepository {
 
     return bet;
   }
+
+  async findAllByAuctionId(auctionId: string): Promise<Bets[] | null> {
+    const bets = await prisma.bets.findMany({
+      where: { auction_id: auctionId }
+    });
+
+    return bets;
+  }
 }
 
 export { PrismaBetsRepository };
