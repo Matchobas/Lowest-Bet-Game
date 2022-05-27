@@ -25,8 +25,8 @@ betsRoutes.post('/', async (request, response) => {
   return response.status(201).json(bet);
 });
 
-betsRoutes.get('/', async (request, response) => {
-  const { id } = request.body;
+betsRoutes.get('/:id', async (request, response) => {
+  const { id } = request.params;
 
   const prismaBetsRepository = new PrismaBetsRepository();
 

@@ -16,13 +16,13 @@ auctionsRoutes.post('/', async (request, response) => {
   return response.json(auction);
 });
 
-auctionsRoutes.get('/', async (request, response) => {
-  const { id } = request.body;
+auctionsRoutes.get('/:auctionId', async (request, response) => {
+  const { auctionId } = request.params;
 
   const prismaAuctionsRepository = new PrismaAuctionsRepository();
   const getAuctionByIdUseCase = new GetAuctionByIdUseCase(prismaAuctionsRepository);
 
-  const auction = await getAuctionByIdUseCase.execute(String(id));
+  const auction = await getAuctionByIdUseCase.execute(String(auctionId));
 
   return response.json(auction);
 });
