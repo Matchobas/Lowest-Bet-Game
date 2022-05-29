@@ -21,16 +21,16 @@ class GetWinnerBetUseCase {
     this.auctionsRepository = auctionsRepository;
   }
   
-  async execute(auctionId: string): Promise<Bets> {
+  async execute(auctionId: string): Promise<Bets | undefined> {
     const auction = await this.auctionsRepository.findById(auctionId);
 
     if (!auction) {
       throw new AppError("The informed ID does not correspond to any existing auction");
     }
 
-    if (auction.end_time > new Date()) {
-      throw new AppError("There is still time until the bet is finished");
-    }
+    // if (auction.end_time > new Date()) {
+    //   throw new AppError("There is still time until the bet is finished");
+    // }
 
     const bets = await this.betsRepository.findAllByAuctionId(auctionId);
 
@@ -52,9 +52,12 @@ class GetWinnerBetUseCase {
       }
     });
 
-    const lower = noDuplicateBetsValues.sort()[0];
+    const values = noDuplicateBetsValues.map((bet) => bet.value);
+    const lower = values.sort()[0];
 
-    return lower;
+    const winner = noDuplicateBetsValues.find((bet) => bet.value === lower);
+
+    return winner;
   }
 }
 
