@@ -52,8 +52,13 @@ class GetWinnerBetUseCase {
       }
     });
 
-    const values = noDuplicateBetsValues.map((bet) => bet.value);
-    const lower = values.sort()[0];
+    let lower = Infinity;
+
+    noDuplicateBetsValues.forEach((bet) => {
+      if (bet.value) {
+        if (bet.value < lower) lower = bet.value;
+      }
+    });
 
     const winner = noDuplicateBetsValues.find((bet) => bet.value === lower);
 
